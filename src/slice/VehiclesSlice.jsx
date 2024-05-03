@@ -58,6 +58,7 @@ const VehiclesSlice = createSlice({
   },
 });
 export const selectVehicleById = (state) => {
+  console.log(state.Vehicles.data);
   return state.Vehicles.data.find(vehicle => vehicle.def === true);
 };
 

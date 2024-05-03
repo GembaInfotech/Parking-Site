@@ -11,11 +11,11 @@ import DatePicker from 'react-datepicker';
 import { MdEdit } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import UserInfoForm from '../../Components/CheckoutComponents/UserInfoForm';
-import { FaArrowRight } from 'react-icons/fa';
 import { PiCurrencyInrBold } from 'react-icons/pi';
 import Swal from 'sweetalert2';
 import 'react-datepicker/dist/react-datepicker.css';
-import PaymentInfo from '../../Components/CheckoutComponents/PaymentInfo';
+// import PaymentInfo from '../../Components/CheckoutComponents/PaymentInfo';
+import VehicleInfo from '../../Components/CheckoutComponents/VehicleInfo';
 // import axios from 'axios';
 
 function Booking() {
@@ -48,6 +48,7 @@ function Booking() {
     if (token) {
       setIsLoggedIn(true);
       setDefaultVehicle(vehicles);
+      console.log(vehicles);
     }
   }, [defaultVehicle, dispatch]);
 
@@ -68,14 +69,13 @@ function Booking() {
 
   const check = price * 0.09;
 
-  let rounded = Math.round(check);
+  let GST = Math.round(check);
 
   if (check - Math.floor(check) === 0.5) {
-    rounded = Math.ceil(check);
+    GST = Math.ceil(check);
   }
 
-  const Amount = price + 2 * rounded;
-
+  const Amount = price + 2 * GST;
 
   const book = async () => {
     try {
@@ -90,9 +90,9 @@ function Booking() {
         out: toDate || Totime,
         status: "Incoming",
         num: vehicles.num,
-        price: price,
-        sgst: rounded,
-        cgst: rounded,
+        price: Amount,
+        sgst: GST,
+        cgst: GST,
       };
       const bookingData = bookingDetails;
       const avail = await dispatch(createBookingAsync({ bookingData }));
@@ -133,7 +133,7 @@ function Booking() {
         <div className='w-2/3 max-md:w-[90%] flex-col px-32 max-md:px-0'>
           <div className=' border-black w-full h-48 my-1  py-6 max-md:my-0'>
             <h1 className='font-light text-gray-800'>complete your booking process</h1>
-            <h1 className='text-gray-800 text-xl font-bold px-2 my-2'>{parkingData.pn}</h1>
+            <h1 className='text-gray-800 text-xl font-bold px-2 my-2 px-4'>{parkingData.pn}</h1>
             <div className=' flex bg-[#f0f4f9] p-2  max-md:flex-col rounded-lg h-24 justify-evenly items-center'>
               <div className='max-md:m-1'>
                 <DatePicker
@@ -166,24 +166,44 @@ function Booking() {
           {isLoggedIn ? null : (<div className='bg-[#fbfbfb] border-gray-300 rounded-md flex h-80 max-md:h-60 my-2 max-md:my-0 justify-evenly  items-center'>
             <UserInfoForm />
           </div>)}
-          {/* <div className='bg-[#fbfbfb]  border-gray-300 rounded-md flex h-80 my-2 max-md:my-0 justify-evenly  items-center'>
-            <PaymentInfo className="max-md:-mt-4"/>
-          </div> */}
-          <div className='bg-gray-100  border-gray-300 rounded-md flex-row h-40 my-2 max-md:my-0 justify-evenly px-8 items-center'>
-            <h1 className='text-gray-800 font-semibold text-2xl py-3 max-md:text-xl'>Payment Summary </h1>
-            <div className='flex justify-between px-1 '>
-              <h1 className='text-xl font-semibold max-md:text-base max-md:font-light max-md:mt-2'>Price </h1>
-              <button onClick={() => { getPrice() }}>refresh</button>
-              <h1 className='text-xl font-bold max-md:font-semibold max-md:text-normal'><PiCurrencyInrBold className='text-normal'/>{Amount}</h1>
+          <div className='bg-[#fbfbfb]  border-gray-300 rounded-md h-36 max-md:my-0 '>
+            <VehicleInfo className="max-md:-mt-4" defaultVehicle={defaultVehicle} />
+          </div>
+          <div className='bg-gray-100 rounded-lg shadow-md p-6 my-1 max-md:my-0'>
+            <h1 className='text-gray-800 font-semibold text-2xl mb-4 '>Payment Summary</h1>
+            <div className='px-8 flex justify-between'>
+              <div className='flex items-center mb-1 '>
+                <h1 className='font-semibold text-gray-600 mr-2'>Base Price:</h1>
+                <h1 className='font-bold text-gray-800 flex items-center'><PiCurrencyInrBold className='text-gray-600 mr-1' />{price}</h1>
+              </div>
+              <div className='flex items-center mb-1 '>
+                <h1 className='font-semibold text-gray-600 mr-2'>CGST:</h1>
+                <h1 className='font-bold text-gray-800 flex items-center'><PiCurrencyInrBold className='text-gray-600 mr-1' />{GST}</h1>
+              </div>
+              <div className='flex items-center mb-1 '>
+                <h1 className='font-semibold text-gray-600 mr-2'>SGST:</h1>
+                <h1 className='font-bold text-gray-800 flex items-center'><PiCurrencyInrBold className='text-gray-600 mr-1' />{GST}</h1>
+              </div>
+              <div className='flex items-center '>
+                <h1 className='font-bold text-gray-600 mr-2'>Total Price:</h1>
+                <h1 className='font-bold text-gray-800 flex items-center'><PiCurrencyInrBold className='text-gray-600 mr-1' />{Amount}</h1>
+              </div>
             </div>
-            <button
-              id="pay"
-              onClick={() => { book() }}
-              // onClick={()=>paymentHandler(10000, 'INR')}
-              className="bg-blue-500 text-white px-4 mt-2 max-md:text-sm max-md:px-2  max-md:py-1 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-            >
-              Confirm Booking
-            </button>
+            <div className='flex justify-end mt-4'>
+              <button
+                id="pay"
+                onClick={() => { book() }}
+                className="bg-blue-500 text-white px-2 py-2 rounded-lg hover:bg-blue-600 transition duration-300 mr-4"
+              >
+                Confirm Booking
+              </button>
+              <button
+                className="bg-gray-500 text-white px-2 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
+                onClick={() => { getPrice() }}
+              >
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
         <div className='flex-row p-4 w-1/3 max-md:w-full  max-md:p-10 max-md:items-center'>
