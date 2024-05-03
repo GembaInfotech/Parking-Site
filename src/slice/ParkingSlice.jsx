@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchParking } from '../api/ParkingAPI/ParkingAPI';
 export const fetchParkingsAsync = createAsyncThunk(
     'parkings/fetch',
-    async ({ radii }) => {
-        const response = await fetchParking({ radii });
+    async ({ radii, locationValue }) => {
+        const response = await fetchParking({ radii, locationValue });
         return response;
     }
 );

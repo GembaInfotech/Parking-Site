@@ -4,11 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import ParkingSkeleton from '../../Skeletons/ParkingSkeleton';
 import MapScreen from './MapScreen';
 function ParkingScreen() {
+  //const {location} = useParams();
+  const { location } = useParams();
   const [locationValue, setLocationValue] = useState('');
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [radii, setradii] = useState(500);
-  const { location } = useParams();
+  
   const [loading, setLoading] = useState(false);
   const Latitude = 40.7128
   const Longitude = -74.0060
@@ -19,23 +21,19 @@ function ParkingScreen() {
 
 
   const handleSearch = () => {
-    setLoading(true);
-    console.log(locationValue)
-    dispatch(fetchParkingsAsync({ radii }));
+    setLoading(true);    
+    dispatch(fetchParkingsAsync({ radii, locationValue }));
     setParkings(parkingdata.data);
 
   };
 
   useEffect(() => {
+    
     setParkings(parkingdata.data);
-    console.log(parkingdata.data)
   }, [parkingdata.data]);
 
 
-  useEffect(() => {
-    console.log("called")
-    dispatch(fetchParkingsAsync({ radii }));
-  }, [radii]);
+ 
 
   return (
     <div>

@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 
 const MapScreen = ({ data, selected }) => {
-  console.log(data)
   const mapContainerRef = useRef(null);
   const [selectedParking, setSelectedParking] = useState(null);
-  console.log(selected)
 
   useEffect(() => {
     const loader = new Loader({

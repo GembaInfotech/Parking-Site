@@ -1,5 +1,5 @@
 import Card from './Card'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import phone from '../../assets/comp.jpg'
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import { FaSquareParking } from "react-icons/fa6";
@@ -10,14 +10,25 @@ import image2 from '../../assets/parking3.jpg'
 import image3 from '../../assets/parking5.webp'
 import { IoSearch } from "react-icons/io5";
 import { Link } from 'react-router-dom'
+import { fetchParkingsAsync } from '../../slice/ParkingSlice';
+import { useDispatch } from 'react-redux';
+import image from '../../assets/parking.webp'
 
 function Main() {
-  const [location, setLocation] = useState('');
+  const dispatch = useDispatch()
+  const [locationValue, setLocation] = useState('');
+ const Call = ()=>{
+  const radii = 100
 
+  dispatch(fetchParkingsAsync({ radii, locationValue }));
+
+ }
   return (
-    <div className='pt-16 max-sm:pt-24 flex-col w-full' >
-      <div>
-        <div className="bg-white  py-2 max-sm:p-0 mx-auto  md:mt-20 sm:my-4 w-3/4  max-sm:w-4/5 rounded-lg">
+    <div  style={{ backgroundImage: `url(${image})` }}   className='pt-16 max-sm:pt-24 flex-col w-full' >
+      <div >
+        <div  className="bg-white  py-2 max-sm:p-0 mx-auto  md:mt-20 sm:my-4 w-3/4  max-sm:w-4/5 rounded-lg"
+        
+        >
           <div className="container  flex items-center justify-between px-2 max-sm:p-0 ">
             <h1 className='text-gray-500 font-medium max-md:hidden'>Search for your nearby Parking Spot</h1>
             <input
@@ -26,8 +37,8 @@ function Main() {
               onChange={(e) => setLocation(e.target.value)}
               className="px-4 py-2 max-md:px-2 border rounded-lg focus:outline-none focus:border-blue-500"
             />
-            <Link to={`/parking/${location}`}>
-              <button className="bg-blue-500 text-white px-4 max-md:px-2 py-2  max-sm:px-1 max-sm:py-1 max-sm:m-1 rounded-lg hover:bg-blue-600 transition duration-300">
+            <Link to={`/parking/${locationValue}`}>
+              <button onClick={()=>{Call()}} className="bg-blue-500 text-white px-4 max-md:px-2 py-2  max-sm:px-1 max-sm:py-1 max-sm:m-1 rounded-lg hover:bg-blue-600 transition duration-300">
                 <div className='flex'>
                   <h1 className='pt-1 px-1 text-2xl'> <IoSearch /></h1>
                 </div>

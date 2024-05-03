@@ -23,7 +23,7 @@ function BookingScreen() {
           <h1 className='ml-8 mt-1 mb-4 text-2xl font-light max-sm:text-base max-sm:mb-0'>My Bookings</h1>
           <div className="flex flex-wrap justify-center mx-4 max-sm:mx-0">
             {bookings?.data?.map((booking) => (
-              <div key={booking._id} className="w-full sm:w-1/3 mb-4 max-sm:w-full max-sm:mb-4">
+              <div key={booking._id} className="w-full sm:w-1/2 mb-4 max-sm:w-full max-sm:mb-4">
                 <BookingCard booking={booking} />
               </div>
             ))}
