@@ -7,15 +7,15 @@ import { queryformAsync } from '../../slice/QuerySlice'
 import { useDispatch } from 'react-redux';
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
-  email: Yup.string().email('Invalid email address').required('Email is required'),
-  mobile: Yup.string().required('Mobile is required'),
+  mail: Yup.string().email('Invalid email address').required('Email is required'),
+  mob: Yup.string().required('Mobile is required'),
   message: Yup.string().required('Message is required'),
 });
 
 const initialValues = {
   name: '',
-  email: '',
-  mobile: '',
+  mail: '',
+  mob: '',
   message: '',
 };
 
@@ -26,6 +26,7 @@ function QueryForm() {
   const onSubmit = async (values, { resetForm }) => {
     setIsSubmitting(true);
     try {
+      console.log(values);
       dispatch(queryformAsync({ values }));
       resetForm(initialValues);
       Swal.fire({
@@ -59,13 +60,13 @@ function QueryForm() {
           </div>
 
           <div className="mb-4">
-            <Field type="text" id="email" name="email" placeholder="Email" className="border rounded-lg p-3 w-full" />
-            <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
+            <Field type="text" id="mail" name="mail" placeholder="Email" className="border rounded-lg p-3 w-full" />
+            <ErrorMessage name="mail" component="div" className="text-red-500 text-sm" />
           </div>
 
           <div className="mb-4">
-            <Field type="text" id="mobile" name="mobile" placeholder="Mobile" className="border p-3 rounded-lg w-full" />
-            <ErrorMessage name="mobile" component="div" className="text-red-500 text-sm" />
+            <Field type="text" id="mob" name="mob" placeholder="Mobile" className="border p-3 rounded-lg w-full" />
+            <ErrorMessage name="mob" component="div" className="text-red-500 text-sm" />
           </div>
 
           <div className="mb-4">

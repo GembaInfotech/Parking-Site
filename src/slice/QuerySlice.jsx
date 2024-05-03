@@ -4,7 +4,9 @@ import { queryform } from '../api/QueryAPI/QueryAPI';
 export const queryformAsync = createAsyncThunk(
   'query/add',
   async ({ values }) => {
+    console.log(values, "testing....1");
     const response = await queryform({ values });
+    console.log(values, "testing.....2");
     return response.data;
   }
 );
